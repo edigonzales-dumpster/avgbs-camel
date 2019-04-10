@@ -1,0 +1,38 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply from: "$rootDir/gradle/versioning.gradle"
+
+group = 'ch.so.agi'
+
+ext {
+    apacheCamelVersion = "2.23.1"
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "http://jars.interlis.ch" }     
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.apache.camel:camel-spring-boot-starter:${apacheCamelVersion}"
+    implementation "org.apache.camel:camel-ftp:${apacheCamelVersion}"
+    implementation "org.apache.camel:camel-zipfile:${apacheCamelVersion}"
+    implementation "org.apache.camel:camel-aws:${apacheCamelVersion}"
+    runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
