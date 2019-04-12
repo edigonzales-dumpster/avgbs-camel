@@ -1,5 +1,7 @@
 package ch.so.agi.avgbs.camel;
 
+import java.nio.ByteBuffer;
+
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.aws.s3.S3Constants;
@@ -41,11 +43,12 @@ public class Av2GbRoute extends RouteBuilder {
     public void configure() throws Exception {
         from("ftp://"+ftpUserInfogrips+"@"+ftpUrlInfogrips+"/\\av2gb\\?password="+ftpPwdInfogrips+"&antInclude=*.zip&autoCreate=false&noop=true&readLock=changed&stepwise=false&separator=Windows&passiveMode=true&binary=true&delay=5000&initialDelay=5000&idempotentRepository=#fileConsumerRepo&idempotentKey=av2gb-ftp-${file:name}-${file:size}-${file:modified}")
         .to("file://"+pathToAv2GbDownloadFolder)
+//        from("file://"+pathToAv2GbDownloadFolder+"/?antInclude=*.zip&noop=true&delay=30000&initialDelay=5000&readLock=changed")
         .split(new ZipSplitter())
-        .streaming().convertBodyTo(String.class, "UTF-8")
+        .streaming().convertBodyTo(ByteBuffer.class)
             .choice()
                 .when(body().isNotNull())
-                    .to("file://"+pathToAv2GbUnzipFolder+"?charset=UTF-8") 
+                    .to("file://"+pathToAv2GbUnzipFolder) 
             .end()
         .end();        
 
