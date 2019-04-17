@@ -18,7 +18,8 @@ targetCompatibility = '1.8'
 repositories {
     jcenter()
     mavenCentral()
-    maven { url "http://jars.interlis.ch" }     
+    maven { url "http://jars.interlis.ch" }
+    mavenLocal()     
 }
 
 configurations.all {

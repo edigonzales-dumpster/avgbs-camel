@@ -36,11 +36,12 @@ public class Av2GbRoute extends RouteBuilder {
     @Value("${app.awsSecretKey}")
     private String awsSecretKey;
     
-    @Value("${app.awsBucketNameAv2gb}")
-    private String awsBucketNameAv2gb;
+    @Value("${app.awsBucketNameAv2Gb}")
+    private String awsBucketNameAv2Gb;
 
     @Override
     public void configure() throws Exception {
+        // Download file from Infogrips ftp server.
         from("ftp://"+ftpUserInfogrips+"@"+ftpUrlInfogrips+"/\\av2gb\\?password="+ftpPwdInfogrips+"&antInclude=*.zip&autoCreate=false&noop=true&readLock=changed&stepwise=false&separator=Windows&passiveMode=true&binary=true&delay=5000&initialDelay=5000&idempotentRepository=#fileConsumerRepo&idempotentKey=av2gb-ftp-${file:name}-${file:size}-${file:modified}")
         .to("file://"+pathToAv2GbDownloadFolder)
 //        from("file://"+pathToAv2GbDownloadFolder+"/?antInclude=*.zip&noop=true&delay=30000&initialDelay=5000&readLock=changed")
@@ -52,15 +53,20 @@ public class Av2GbRoute extends RouteBuilder {
             .end()
         .end();        
 
-      from("file://"+pathToAv2GbUnzipFolder+"/?noop=true&delay=30000&initialDelay=5000&readLock=changed&idempotentRepository=#fileConsumerRepo&idempotentKey=av2gb-s3-${file:name}-${file:size}-${file:modified}")
-      .convertBodyTo(byte[].class)
-      .setHeader(S3Constants.CONTENT_LENGTH, simple("${in.header.CamelFileLength}"))
-      .setHeader(S3Constants.KEY,simple("${in.header.CamelFileNameOnly}"))
-      .to("aws-s3://" + awsBucketNameAv2gb
-              + "?deleteAfterWrite=false&region=EU_CENTRAL_1" //https://docs.aws.amazon.com/de_de/general/latest/gr/rande.html https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/regions/Regions.html
-              + "&accessKey={{awsAccessKey}}"
-              + "&secretKey=RAW({{awsSecretKey}})")
-      .log(LoggingLevel.INFO, "File uploaded: ${in.header.CamelFileNameOnly}");
+        
+        
+        
+        
+        // Upload file to S3.
+        from("file://"+pathToAv2GbUnzipFolder+"/?noop=true&delay=30000&initialDelay=5000&readLock=changed&idempotentRepository=#fileConsumerRepo&idempotentKey=av2gb-s3-${file:name}-${file:size}-${file:modified}")
+        .convertBodyTo(byte[].class)
+        .setHeader(S3Constants.CONTENT_LENGTH, simple("${in.header.CamelFileLength}"))
+        .setHeader(S3Constants.KEY,simple("${in.header.CamelFileNameOnly}"))
+        .to("aws-s3://" + awsBucketNameAv2Gb
+                + "?deleteAfterWrite=false&region=EU_CENTRAL_1" //https://docs.aws.amazon.com/de_de/general/latest/gr/rande.html https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/regions/Regions.html
+                + "&accessKey={{awsAccessKey}}"
+                + "&secretKey=RAW({{awsSecretKey}})")
+        .log(LoggingLevel.INFO, "File uploaded: ${in.header.CamelFileNameOnly}");
 
     }
 

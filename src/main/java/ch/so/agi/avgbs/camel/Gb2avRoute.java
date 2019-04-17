@@ -36,8 +36,8 @@ public class Gb2avRoute extends RouteBuilder {
     @Value("${app.awsSecretKey}")
     private String awsSecretKey;
     
-    @Value("${app.awsBucketNameGb2av}")
-    private String awsBucketNameGb2av;
+    @Value("${app.awsBucketNameGb2Av}")
+    private String awsBucketNameGb2Av;
 
     @Override
     public void configure() throws Exception {
@@ -55,7 +55,7 @@ public class Gb2avRoute extends RouteBuilder {
       .convertBodyTo(byte[].class)
       .setHeader(S3Constants.CONTENT_LENGTH, simple("${in.header.CamelFileLength}"))
       .setHeader(S3Constants.KEY,simple("${in.header.CamelFileNameOnly}"))
-      .to("aws-s3://" + awsBucketNameGb2av
+      .to("aws-s3://" + awsBucketNameGb2Av
               + "?deleteAfterWrite=false&region=EU_CENTRAL_1" 
               + "&accessKey={{awsAccessKey}}"
               + "&secretKey=RAW({{awsSecretKey}})")
