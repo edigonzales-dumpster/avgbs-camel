@@ -16,10 +16,11 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 repositories {
+    maven { url  "https://dl.bintray.com/sogis/ili2pg" } // temporary!
     jcenter()
     mavenCentral()
     maven { url "http://jars.interlis.ch" }
-    mavenLocal()     
+    //mavenLocal()     
 }
 
 configurations.all {
@@ -30,10 +31,14 @@ configurations.all {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation('org.springframework.boot:spring-boot-starter-jdbc') 
     implementation "org.apache.camel:camel-spring-boot-starter:${apacheCamelVersion}"
     implementation "org.apache.camel:camel-ftp:${apacheCamelVersion}"
     implementation "org.apache.camel:camel-zipfile:${apacheCamelVersion}"
     implementation "org.apache.camel:camel-aws:${apacheCamelVersion}"
+    implementation ('ch.so.agi.camel:camel-components:latest.integration') {changing=true}
+    implementation ('ch.so.agi.camel:camel-ili2pg:latest.integration') {changing=true}
+    runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

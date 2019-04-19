@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Gb2avRoute extends RouteBuilder {
+public class Gb2AvRoute extends RouteBuilder {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value("${app.ftpUserInfogrips}")
