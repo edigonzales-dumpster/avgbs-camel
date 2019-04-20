@@ -1,15 +1,17 @@
 package ch.so.agi.avgbs.models;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Av2GbMessage {
     private int t_id;
     private String beschrieb;
+    private String dateinameplan;
     private Date endetechnbereit;
     private String istprojektmutation;
     private String mutationsnummerNummer;
     private String mutationsnummerNBIdent;
-    private Date importdate;
+    private Timestamp importdate;
     
     public int getT_id() {
         return t_id;
@@ -22,6 +24,12 @@ public class Av2GbMessage {
     }
     public void setBeschrieb(String beschrieb) {
         this.beschrieb = beschrieb;
+    }
+    public String getDateinameplan() {
+        return dateinameplan;
+    }
+    public void setDateinameplan(String dateinameplan) {
+        this.dateinameplan = dateinameplan;
     }
     public Date getEndetechnbereit() {
         return endetechnbereit;
@@ -47,10 +55,10 @@ public class Av2GbMessage {
     public void setMutationsnummerNBIdent(String mutationsnummerNBIdent) {
         this.mutationsnummerNBIdent = mutationsnummerNBIdent;
     }
-    public Date getImportdate() {
+    public Timestamp getImportdate() {
         return importdate;
     }
-    public void setImportdate(Date importdate) {
+    public void setImportdate(Timestamp importdate) {
         this.importdate = importdate;
     }
 }

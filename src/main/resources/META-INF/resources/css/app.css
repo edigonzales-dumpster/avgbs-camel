@@ -1,0 +1,14 @@
+body {
+	font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+	padding: 8px 10px;
+	color: black;
+}
+
+.ui-widget {
+	font-size: 1.0em;
+	font-family: 'IBM Plex Sans', sans-serif;
+	color: black;
+}
