@@ -7,7 +7,7 @@ av2gb and gb2av
 ## Entwicklung
 SQL-Datei für DDL erzeugen:
 ```
-java -jar /Users/stefan/apps/ili2pg-4.0.0/ili2pg-4.0.0.jar --createBasketCol --createDatasetCol --createFk --createFkIdx --coalesceJson --createEnumTabs --nameByTopic --smart2Inheritance --dbschema agi_avgbs --createscript sql/agi_avgbs_create.sql --modeldir model --models GB2AV
+java -jar /Users/stefan/apps/ili2pg-4.0.0/ili2pg-4.0.0.jar --createBasketCol --createDatasetCol --createFk --createFkIdx --coalesceJson --createEnumTabs --nameByTopic --createImportTabs --smart2Inheritance --dbschema agi_avgbs --createscript sql/agi_avgbs_create.sql --modeldir model --models GB2AV
 ```
 
 Testimport:
