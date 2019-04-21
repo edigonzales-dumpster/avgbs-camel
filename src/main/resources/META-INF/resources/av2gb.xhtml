@@ -3,14 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
 <h:head>
     <title>AV2GB - Lieferungen: Amtliche Vermessung an das Grundbuch</title>
     <!-- 
     <h:outputStylesheet name="css/primeflex.css" />
     -->
-    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700" rel="stylesheet"/>    
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed:400,700|IBM+Plex+Sans:400,700" rel="stylesheet" />   
 </h:head>
 
 <h:body>
@@ -28,43 +29,39 @@
             <div class="p-col">
                 <div class="box">
                     <h:form>
-                        <p:dataTable var="dataset" value="#{datasets.datasetList}" resizableColumns="true" reflow="true">
-                            <p:column headerText="Gemeinde" sortBy="#{dataset.gem_name}" filterBy="#{dataset.gem_name}" filterMatchMode="contains" style="min-width:280px;">
-                                <h:outputText value="#{dataset.gem_name}"  />
+                        <p:dataTable var="message" value="#{av2gb.messageList}" reflow="true">
+                            <p:column headerText="Mutationsnummer" filterBy="#{message.mutationsnummerNummer} #{message.mutationsnummerNBIdent}" filterMatchMode="contains">
+                                <h:outputText value="#{message.mutationsnummerNummer} / #{message.mutationsnummerNBIdent}" />
                             </p:column>
-                         
-                            <p:column headerText="BFS-Nr." sortBy="#{dataset.gem_bfs}" filterBy="#{dataset.gem_bfs}" filterMatchMode="contains" width="80">
-                                <h:outputText value="#{dataset.gem_bfs}" />
+                            <p:column headerText="Nummer" sortBy="#{message.mutationsnummerNummer}" filterBy="#{message.mutationsnummerNummer}" filterMatchMode="contains">
+                                <h:outputText value="#{message.mutationsnummerNummer}" />
                             </p:column>
-                         
-                            <p:column headerText="Lieferdatum" sortBy="#{dataset.lieferdatum}" filterBy="#{dataset.lieferdatum}" filterMatchMode="contains" width="100">
-                                <h:outputText value="#{dataset.lieferdatum}" />
+                            <p:column headerText="NBIdent" sortBy="#{message.mutationsnummerNBIdent}" filterBy="#{message.mutationsnummerNBIdent}" filterMatchMode="contains">
+                                <h:outputText value="#{message.mutationsnummerNBIdent}" />
                             </p:column>
-                            
-                            <p:column headerText="Nachführungsgeometer" sortBy="#{dataset.nfgeometer}" filterBy="#{dataset.nfgeometer}" filterMatchMode="contains" width="300" style="white-space: nowrap">
-                                <h:outputText value="#{dataset.nfgeometer}" />
+                            <p:column headerText="Beschreibung" sortBy="#{message.beschrieb}" filterBy="#{message.beschrieb}" filterMatchMode="contains">
+                                <h:outputText value="#{message.beschrieb}" />
                             </p:column>
-
-                            <p:column headerText="Karte" width="60" style="text-align: center">
-                                <!-- <h:outputText value="#{dataset.pdf}" /> -->
-                                <h:outputLink value="#{dataset.pdf}" target="_blank"><h:graphicImage value = "images/pdficon_small.png"/></h:outputLink>
+                            <p:column headerText="Technischer Abschluss" sortBy="#{message.endetechnbereit}" filterBy="#{message.endetechnbereit}" filterMatchMode="contains">
+                                <h:outputText value="#{message.endetechnbereit}" />
                             </p:column>
-
-                            <p:column headerText="ITF-CH" width="60" style="text-align: center">
-                                <h:outputLink value="http://#{dataset.itfch}"><h:graphicImage value = "images/zip_icon.png"/></h:outputLink>
+                            <p:column headerText="Plan" style="text-align: center">
+                                <h:outputLink value="#{message.dateinameplan}" target="_blank">PDF</h:outputLink>
+                            </p:column>                            
+                            <p:column headerText="Tabelle" style="text-align: center">
+                                <h:outputLink value="${fn:substring(message.dateinameplan, 0, fn:length(message.dateinameplan)-4)}.xml" target="_blank">XML</h:outputLink>
                             </p:column>
-
-                            <p:column headerText="ITF-SO" width="60" style="text-align: center">
-                                <h:outputLink value="http://#{dataset.itfso}"><h:graphicImage value = "images/zip_icon.png"/></h:outputLink>
+                            <p:column headerText="Karte" style="text-align: center">
+                                <h:outputLink value="https://geo.so.ch/map" target="_blank">Link</h:outputLink>
+                            </p:column>                            
+                            <p:column headerText="Ist Projektmutation?" sortBy="#{message.istprojektmutation}" filterBy="#{message.istprojektmutation}" filterMatchMode="contains">
+                                <h:outputText value="#{message.istprojektmutation}" />
                             </p:column>
-
-                            <p:column headerText="DXF" width="60" style="text-align: center">
-                                <h:outputLink value="http://#{dataset.dxf}"><h:graphicImage value = "images/zip_icon.png"/></h:outputLink>
+                            <p:column headerText="Importdatum" sortBy="#{message.importdate}" filterBy="#{message.importdate}" filterMatchMode="contains">
+                                <h:outputText value="#{message.importdate}" >
+                                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+                                </h:outputText>
                             </p:column>
-
-                            <p:column headerText="SHP" width="60" style="text-align: center">
-                                <h:outputLink value="http://#{dataset.shp}"><h:graphicImage value = "images/zip_icon.png"/></h:outputLink>
-                            </p:column>                         
                         </p:dataTable>
                     </h:form>
                 </div>
