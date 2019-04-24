@@ -51,7 +51,25 @@ dependencies {
     implementation ('ch.so.agi.camel:camel-components:latest.integration') {changing=true}
     implementation ('ch.so.agi.camel:camel-ili2pg:latest.integration') {changing=true}
     implementation 'com.rometools:rome:1.12.0'
+    
+    implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.1'
+    
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+// Slighly better ("thinner") docker image handling
+task deleteFilesJarDir(type: Delete) {
+    delete fileTree("${buildDir}/dependency/")//.listFiles()
+    delete file("${buildDir}/dependency/")
+}
+
+task unzipJar(type: Copy) {
+    from zipTree(file("${buildDir}/libs/avgbs-"+version+".jar"))
+    into file("${buildDir}/dependency/")
+}
+unzipJar.dependsOn(deleteFilesJarDir)
+bootJar.finalizedBy(unzipJar)
